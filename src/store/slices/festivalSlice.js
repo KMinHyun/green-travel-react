@@ -6,23 +6,28 @@ const festivalSlice = createSlice({
   initialState: {
     list: [],
     page: 0,
+    scrollEventFlg: true,
   },
   reducers: {
-
+    setScrollEventFlg: (state, action) => {
+      state.scrollEventFlg = action.payload;
+    }
   },
-  estraReducers: builder => {
+  extraReducers: builder => {
     builder
       .addCase(festivalIndex.fulfilled, (state, action) => {
         if(action.payload.items?.item) {
           state.list = [...state.list, ...action.payload.items.item];
+          state.page = action.payload.pageNo;
+          state.scrollEventFlg = true;
         } else {
-          state.list = action.payload.items.item;
+          state.scrollEventFlg = false;
         }
       })
-      .addCase(festivalIndex.rejected, (state, action) => {
-        state.loading = false;
-      })
-    }    
-})
+      .addMatcher(action => action.type.endsWith('/rejected'), (state, action) => console.log('Error!', action.error));
+  }    
+});
+
+export const { setScrollEventFlg } = festivalSlice.actions;
 
 export default festivalSlice.reducer;
