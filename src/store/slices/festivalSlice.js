@@ -7,10 +7,14 @@ const festivalSlice = createSlice({
     list: [],
     page: 0,
     scrollEventFlg: true,
+    showTopButton: false,
   },
   reducers: {
     setScrollEventFlg: (state, action) => {
       state.scrollEventFlg = action.payload;
+    },
+    setShowTopButton: (state, action) => {
+      state.showTopButton = action.payload;
     }
   },
   extraReducers: builder => {
@@ -28,6 +32,6 @@ const festivalSlice = createSlice({
   }    
 });
 
-export const { setScrollEventFlg } = festivalSlice.actions;
+export const { setScrollEventFlg, setShowTopButton } = festivalSlice.actions;
 
 export default festivalSlice.reducer;

@@ -4,7 +4,14 @@ function Header() {
 
   return(
     <>
-      <h1><span>Green Travel</span></h1>
+      <div className='header'>
+        <h1><span>Green Travel</span></h1>
+        <div className='search-bar'>
+          <form action="">
+            <input type="search" name="search" id="search"/>
+          </form>
+        </div>
+      </div>
     </>
   )
 }

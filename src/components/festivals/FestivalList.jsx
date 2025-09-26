@@ -3,19 +3,28 @@ import './FestivalList.css';
 import { dateFormatter } from '../../utils/dateFormatter';
 import { festivalIndex } from '../../store/thunks/festivalThunk';
 import { useEffect } from 'react';
-import { setScrollEventFlg } from '../../store/slices/festivalSlice';
+import { setScrollEventFlg, setShowTopButton } from '../../store/slices/festivalSlice';
 import { useNavigate } from 'react-router-dom';
 
 function FestivalList() {
 
   const FestivalList = useSelector(state => state.festival.list);
   const scrollEventFlg = useSelector(state => state.festival.scrollEventFlg);
+  const showTopButton = useSelector(state => state.festival.showTopButton);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
+    const handleScroll = () => {
+      if(window.scrollY > 200) {
+        dispatch(setShowTopButton(true));
+      } else {
+        dispatch(setShowTopButton(false));
+      }
+    }
 
     window.addEventListener('scroll', addNextPage);
+    window.addEventListener('scroll', handleScroll);
 
     if(FestivalList.length === 0) {
       dispatch(festivalIndex());
@@ -23,6 +32,7 @@ function FestivalList() {
 
     return () => {
       window.removeEventListener('scroll', addNextPage);
+      window.removeEventListener('scroll', handleScroll);
     }
   }, []);
 
@@ -57,6 +67,9 @@ function FestivalList() {
           })
         }
       </div>
+      {showTopButton &&
+        <a href="#"><button type="button" className='button-move-top'>TOP</button></a>
+      }
     </>
   )
 }
